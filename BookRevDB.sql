@@ -1,5 +1,6 @@
 create table if not exists USER(
 userID int not null auto_increment,
+username varchar(20),
 email varchar(100),
 phone bigint(10),
 primary key (userID)
@@ -13,30 +14,24 @@ primary key(isbn)
 );
 
 create table if not exists WEBSITE(
-websiteID int not null auto_increment,
 webName varchar(50),
 URL varchar(255),
 isbn bigint(13),
-primary key(websiteID),
 foreign key (isbn) references BOOK(isbn)
 );
 
 create table if not exists REVIEW(
-reviewID int not null auto_increment,
 rating float(3),
 summary varchar(5000),
-websiteID int(10),
 isbn bigint(13),
-primary key(reviewID),
-foreign key (websiteID) references WEBSITE(websiteID),
 foreign key (isbn) references BOOK(isbn)
 );
 
 create table if not exists SEARCHISTORY(
-historyID int not null auto_increment,
 userID int,
 isbn bigint(13),
-primary key(historyID),
+favorite bool not null default 0,
+accessTime DATETIME NOT NULL DEFAULT current_timestamp,
 foreign key (userID) references USER(userID),
 foreign key (isbn) references BOOK(isbn)
 );
