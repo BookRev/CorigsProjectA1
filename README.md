@@ -6,5 +6,10 @@ change project file name to mybookrev3 (if there're some errors)
 
 
 Url for the project: 
-http://34.68.212.227:8080/home   (home page, register and login)
-http://34.68.212.227:8080/shows  (Not in the system, just use to see users information store in the database)
+http://34.68.212.227:9090/home   
+(home page, register and login)
+After login, you can use search(search isbn and return some reviews) and history (see my search history)
+If the data is already in database, it may take shorter time than expected.
+Else the program will access external api to get the data.
+Also, in history page, click on the button or cover of book can show detail of the book (same as search isbn)
+http://34.68.212.227:9090/shows  (Not in the system, just use to see users information store in the database)
