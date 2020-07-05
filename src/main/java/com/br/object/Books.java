@@ -1,6 +1,7 @@
 package com.br.object;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -9,7 +10,7 @@ public class Books {
 private long isbn;
 private String bookpic;
 private String bookname;
-private double[] rate;   //rate on different platforms                          
+private Float rate[];   //rate on different platforms                          
            //1st element is Amazon, 2nd is goodReads, 3rd is others
 private int[] numofgoodreviews;
 private int[] numofmidreviews;
@@ -18,7 +19,10 @@ private String[] comments;   //base on the number of reviews in three platforms
                              //pick up 20 comments
 private int[] price;
 private String author;
-private String link;
+private String[] link;
+private String[] webname;
+private String[] reviews;
+private Float[] rateofreviews;
 
 
 @Id											
@@ -44,10 +48,10 @@ public void setBookname(String bookname) {
 	this.bookname = bookname;
 }
 
-public double[] getRate() {
+public Float[] getRate() {
 	return rate;
 }
-public void setRate(double[] rate) {
+public void setRate(Float[] rate) {
 	this.rate = rate;
 }
 
@@ -91,11 +95,31 @@ public void setAuthor(String author) {
 	this.author = author;
 }
 
-public String getLink() {
+public String[] getLink() {
 	return link;
 }
-public void setLink(String link) {
+public void setLink(String[] link) {
 	this.link = link;
 }
 
+public String[] getWebname() {
+	return webname;
+}
+public void setWebname(String[] webname) {
+	this.webname = webname;
+}
+
+public String[] getReviews() {
+	return reviews;
+}
+public void setReviews(String[] reviews) {
+	this.reviews = reviews;
+}
+
+public Float[] getRateofReviews() {
+	return rateofreviews;
+}
+public void setRateofReviews(Float[]  rateofreviews) {
+	this.rateofreviews = rateofreviews;
+}
 }

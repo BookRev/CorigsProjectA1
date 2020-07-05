@@ -5,7 +5,7 @@ public class Show {
     private String username;
     private int id;
     private String upassword;
-    private String nickname;
+ 
 
     public String getEmail() {
     	return email;
@@ -21,12 +21,6 @@ public class Show {
     	this.username = username;
     }
     
-    public String getNickname() {
-    	return nickname;
-    }
-    public void setNickname(String nickname) {
-    	this.nickname = nickname;
-    }
     
     public int getId() {
         return id;

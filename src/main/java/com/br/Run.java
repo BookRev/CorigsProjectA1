@@ -12,4 +12,6 @@ public class Run{
 	 	SpringApplication.run(Run.class, args);
 	}
 
-}
+}	
+//#spring.datasource.schema=file:src/main/resources/schema.sql
+//#spring.datasource.data=file:src/main/resources/data.sql

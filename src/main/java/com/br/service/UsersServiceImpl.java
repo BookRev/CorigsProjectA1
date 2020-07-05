@@ -59,19 +59,19 @@ public class UsersServiceImpl implements UsersService{
 	}
 
 	@Override
-	public String verify(Users user, int type) {
+	public String[] verify(Users user, int type) {
 		Users user2 = new Users();
 		if(type == 1)
 		user2 = UsersDao.verify(user);
 		else 
 		user2 = UsersDao.verifybyemail(user);
 		if(user2.getId()==0)
-			return "Not";
+			return new String[]{"Not"};
 		else {
 			if(user2.getPassword().equals(user.getPassword()))
-				return user2.getUsername();
+				return new String[]{user2.getUsername(),user2.getId()+""};
 			else
-				return "Fail";
+				return new String[]{"Fail"};
 		}
 		// TODO Auto-generated method stub
 		

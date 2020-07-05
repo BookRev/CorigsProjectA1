@@ -22,7 +22,7 @@ public class UsersDaoImpl implements UsersDao{
 
     
 	public String add(Users user) {
-		String SQL = "INSERT IGNORE INTO user (email,username,password) VALUES(?,?,?);";
+		String SQL = "INSERT IGNORE INTO USER (email,username,password) VALUES(?,?,?);";
 	//	jdbcTemplateObject.update( SQL, new Object[]{"224@g.com","Zara", 11,126632} );
 			if(isUserExists(user))
 				return "cusername";
@@ -67,7 +67,7 @@ public class UsersDaoImpl implements UsersDao{
 	//testing
 	public List<Show> shows() {
 		// TODO Auto-generated method stub
-		return jdbcTemplateObject.query("select * from user", new ShowRowMapper());
+		return jdbcTemplateObject.query("select * from USER", new ShowRowMapper());
 	}
 
 	@Override
@@ -79,13 +79,15 @@ public class UsersDaoImpl implements UsersDao{
 			return erroruser;
 		}
 		else {
-			String sql = "SELECT password FROM user WHERE username = ?";
+			String sql = "SELECT password FROM USER WHERE username = ?";
+			String sql2 = "SELECT userID FROM USER WHERE username = ?";
 		// TODO Auto-generated method stub
 			String temp = jdbcTemplateObject.queryForObject(sql,new Object[] {user.getUsername()}, String.class);
+			int tid = jdbcTemplateObject.queryForObject(sql2,new Object[] {user.getUsername()}, Integer.class);
 			Users user2 = new Users();
 			if(!temp.isEmpty()) {
 			user2.setPassword(temp);
-			user2.setId(1);
+			user2.setId(tid);
 			user2.setUsername(user.getUsername());}
 			else {
 				user2.setId(0);
@@ -103,15 +105,17 @@ public class UsersDaoImpl implements UsersDao{
 			return erroruser;
 		}
 		else {
-			String sql = "SELECT password FROM user WHERE email = ?";
-			String sql2 = "SELECT username FROM user WHERE email = ?";
+			String sql = "SELECT password FROM USER WHERE email = ?";
+			String sql2 = "SELECT username FROM USER WHERE email = ?";
+			String sql3 = "SELECT userID FROM USER WHERE email = ?";
 		// TODO Auto-generated method stub
 			String temp = jdbcTemplateObject.queryForObject(sql,new Object[] {user.getEmail()}, String.class);
 			String temp2 = jdbcTemplateObject.queryForObject(sql2,new Object[] {user.getEmail()}, String.class);
+			int tid = jdbcTemplateObject.queryForObject(sql3,new Object[] {user.getEmail()}, Integer.class);
 			Users user2 = new Users();
 			if(!temp.isEmpty()) {
 			user2.setPassword(temp);
-			user2.setId(1);
+			user2.setId(tid);
 			user2.setUsername(temp2);}
 			else {
 				user2.setId(0);
@@ -122,7 +126,7 @@ public class UsersDaoImpl implements UsersDao{
 	
 private boolean isUserExists(Users usertemp) {
 	String username = usertemp.getUsername();
-        String sql = "SELECT count(*) FROM user WHERE username = ?";
+        String sql = "SELECT count(*) FROM USER WHERE username = ?";
         boolean result = false;
          int count = jdbcTemplateObject.queryForObject(sql, new Object[] { username }, Integer.class);
      if (count >= 1) {
@@ -134,7 +138,7 @@ private boolean isUserExists(Users usertemp) {
 
 private boolean isUserExists2(Users usertemp) {
 	String email = usertemp.getEmail();
-    String sql = "SELECT count(*) FROM user WHERE email = ?";
+    String sql = "SELECT count(*) FROM USER WHERE email = ?";
     boolean result = false;
      int count = jdbcTemplateObject.queryForObject(sql, new Object[] { email }, Integer.class);
  if (count >= 1) {

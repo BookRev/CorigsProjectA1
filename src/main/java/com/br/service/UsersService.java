@@ -16,5 +16,5 @@ public interface UsersService {
     public void update(int id, String newbook);
     public void forgetpw(String email,int num);
     public List<Show> shows();
-    public String verify(Users user,int type);
+    public String[] verify(Users user,int type);
 }

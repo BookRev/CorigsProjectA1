@@ -9,10 +9,11 @@ import com.br.object.Books;
 import com.br.object.Users;
 
 public interface Bookdao {
-public String[] searchbyisbn(Users user,Books book);
+public Books searchbyisbn(Users user,Books book) throws MalformedURLException, ProtocolException, IOException;
 public String[] searchbybarcode(Books book);
 public String[] getfavorite(Books book,Users user);
-public ArrayList<String[]> gethistory(Books book,Users user) throws MalformedURLException, ProtocolException, IOException;
-String[] searchbyisbn2(Users user,Books book) throws MalformedURLException, ProtocolException, IOException;
-public String[] addhistory(Users user,Books book);
+public ArrayList<Books> gethistory(Users user) throws MalformedURLException, ProtocolException, IOException;
+Books searchbyisbn2(Users user,Books book) throws MalformedURLException, ProtocolException, IOException;
+String[] addhistory(Users user, Books book, boolean isfav);
+public void addnewbook(ArrayList<String> as,Long isbn,int isexist);
 }

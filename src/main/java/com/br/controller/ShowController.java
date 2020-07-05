@@ -35,6 +35,7 @@ private static final Logger log = LoggerFactory.getLogger(ShowController.class);
 public static boolean islogin = false;
 public static String nick = "";
 
+
 @RequestMapping(value={"/add"},method = {RequestMethod.GET})
 public String add() {
 	UsersService.add(new Users());
@@ -58,6 +59,7 @@ public String homepage(ModelMap model) {
 public String logout(ModelMap model) {
 	islogin = false;
 	nick = "";
+	LoginController.loginid = 0;
 	return "redirect:/home";
 }
 
@@ -81,16 +83,17 @@ public ModelAndView showlogin() {
 public String login(@Validated @ModelAttribute("loginname") Users users,
         BindingResult result, ModelMap model) {
 	model.put("type","Login");
-	String res = UsersService.verify(users,1);
-    if(res.equals("Not")) {
+	String[] res = UsersService.verify(users,1);
+    if(res[0].equals("Not")) {
     	model.put("errormess","No such account exist");
     	return "fail";}
-    else if(res.equals("Fail")) {
+    else if(res[0].equals("Fail")) {
     	model.put("errormess","Incorrect password");
 	return "fail";}
     else{
 		islogin = true;
-		nick = res;
+		nick = res[0];
+		LoginController.loginid = Integer.parseInt(res[1]);
 	return "redirect:/home";}
 }
 
@@ -103,16 +106,17 @@ public ModelAndView showlogin2() {
 public String login2(@Validated @ModelAttribute("loginemail") Users users,
         BindingResult result, ModelMap model) {
 	model.put("type","Login");
-	String res = UsersService.verify(users,2);
-    if(res.equals("Not")) {
+	String[] res = UsersService.verify(users,2);
+    if(res[0].equals("Not")) {
 	    model.put("errormess","No such account exist");
 	    return "fail";}
-    else if(res.equals("Fail")) {
+    else if(res[0].equals("Fail")) {
     	model.put("errormess","Incorrect password");
 	return "fail";}
     else{
 		islogin = true;
-		nick = res;
+		nick = res[0];
+		LoginController.loginid = Integer.parseInt(res[1]);
 	return "redirect:/home";}
 }
 
