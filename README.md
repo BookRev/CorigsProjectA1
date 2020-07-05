@@ -3,6 +3,8 @@
 change project file name to mybookrev3 (if there're some errors)
 
 *the project cannot access googledatabase now (For if I keep the json privacy key available in github google will keep sending me alert and suspend the cloud)
+In the folder src\main\resources, put the service account key and name it as service-account.json
+In the file findrev.py, a rainforest key is needed
 
 
 Url for the project: 
