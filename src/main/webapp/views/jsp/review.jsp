@@ -23,8 +23,33 @@
 	font-family: Georgia, "Times New Roman", Times, serif;
 }
 </style>
+<!-- Access the bootstrap Css like this,
+		Spring boot will handle the resource mapping automcatically -->
+	<link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+	<!--
+	<spring:url value="/css/main.css" var="springCss" />
+	<link href="${springCss}" rel="stylesheet" />
+	 -->
+	<c:url value="/css/main.css" var="jstlCss" />
+	<link href="${jstlCss}" rel="stylesheet" />
 </head>
 <body>
+	<nav class="navbar navbar-inverse">
+		    <div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="/logout">Logout</a>
+			</div>
+			<div id="navbar" class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+				    <li class="active"><a href="/home">Home</a></li>
+					<li class="active"><a href="/search">Search books</a></li>
+					<li class="active"><a href="/history">My history</a></li>
+					<li class="active"><a href="/favorite">My Favorites</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
 <h3>Book information</h3>
 
 <table width="838" height="140">
@@ -51,8 +76,15 @@
 
 </c:forEach>
 
-<input type="button" name="Submit" οnclick="javascript:history.back(-1);" value="Back">
-<input type="button" name="Submit" οnclick="window.open(/favorite)" value="Mark as favorite and Back">
+<form:form method="POST"
+           action="/newfavorite" modelAttribute="back">
+<input type="button" name="Submit1" onclick="javascript:history.go(-3);" value="Back">
+<%-- input type="button" name="Submit2" onclick="openWindowWithPost('/newfavorite','','isbn','${res.getIsbn()}')"
+value="Mark as favorite and Back"/--%>
+<form:input type = "hidden" path="isbn" value = "${res.getIsbn()}"/>
+<input type="submit" value="Mark as favorite and Back"/>
+</form:form>
+
 <script type="text/javascript">
 setTimeout('reload()', 5000);  
 window.onload = function() {
@@ -62,10 +94,9 @@ window.onload = function() {
     }
 }
 </script> 
-            
-  
-   
 
+
+  
 </body>
 
 </html>

@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html lang="en">
 <head>
@@ -33,18 +33,23 @@
 			</div>
 		</div>
 	</nav>
-
-	<div class="container">
-
-		<div class="starter-template">
-			<h1>Book Review System</h1>
-			<h2>${mess}</h2>
-		</div>
-
-	</div>
-
-	<script type="text/javascript" src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-
+<h3>Admin login</h3>
+<form:form method="POST"
+           action="/sup" modelAttribute="loginadmin">
+    <table width="240">
+        <tr>
+            <td width="66"><form:label path="username">AdminName</form:label></td>
+            <td width="164"><form:input path="username"/></td>
+        </tr>
+        <tr>
+            <td><form:label path="password">
+                password</form:label></td>
+            <td><form:input path="password"/></td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Submit"/></td>
+        </tr>
+    </table>
+</form:form>
 </body>
-
 </html>

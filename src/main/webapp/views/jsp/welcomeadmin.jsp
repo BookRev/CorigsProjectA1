@@ -26,9 +26,10 @@
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
 				    <li class="active"><a href="/home">Home</a></li>
-					<li class="active"><a href="/search">Search books</a></li>
-					<li class="active"><a href="/history">My history</a></li>
-					<li class="active"><a href="/favorite">My Favorites</a></li>
+					<li class="active"><a href="/del">Delete Users</a></li>
+					<li class="active"><a href="/shows">View Users</a></li>
+					<li class="active"><a href="/adminhistory">View History</a></li>
+					<li class="active"><a href="/addadmin">Add Admin</a></li>
 				</ul>
 			</div>
 		</div>

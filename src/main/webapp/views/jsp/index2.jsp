@@ -8,7 +8,7 @@
 </head> 
 <body>       
 <h1> ${message} </h1>
-<input type="button" name="Submit2" onclick="javascript:window.open('/home')"
+<input type="button" name="Submit2" onclick="javascript:window.open('/del')"
 value="Back"/>
 </body>
 </html>
