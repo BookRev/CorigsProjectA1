@@ -41,7 +41,23 @@ public class BookServiceImpl implements BookService{
 			tmp.setIsbn(0);
 			ret.add(tmp);
 		}
-		return ret;
+		return ret; 
+	}
+	@Override
+	public void addfav(Users user, Books books) {
+		// TODO Auto-generated method stub
+		BookDao.addfavorite(user, books);
+	}
+	@Override
+	public ArrayList<Books> getfav(Users user) throws MalformedURLException, ProtocolException, IOException {
+		ArrayList<Books> ret = BookDao.getfavorite(user);
+		if(ret.size()==0) {
+			Books tmp = new Books();
+			tmp.setBookname("No Favorite");
+			tmp.setIsbn(0);
+			ret.add(tmp);
+		}
+		return ret; 
 	}
 	
 }

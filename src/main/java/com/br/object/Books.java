@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-public class Books {
+public class Books { 
 private long isbn;
 private String bookpic;
 private String bookname;
@@ -32,6 +32,9 @@ public long getIsbn() {
 }
 public void setIsbn(long isbn) {
 	this.isbn = isbn;
+}
+public void setIsbn(String isbn) {
+	this.isbn = Long.parseLong(isbn.replaceAll("[^0-9]", ""));
 }
 
 public String getBookpic() {
@@ -120,6 +123,30 @@ public Float[] getRateofReviews() {
 	return rateofreviews;
 }
 public void setRateofReviews(Float[]  rateofreviews) {
-	this.rateofreviews = rateofreviews;
+	this.rateofreviews = rateofreviews; 
 }
-}
+
+public boolean equals(Object o) { 
+	  
+    // If the object is compared with itself then return true   
+    if (o == this) { 
+        return true; 
+    } 
+
+    /* Check if o is an instance of Complex or not 
+      "null instanceof [type]" also returns false */
+    if (!(o instanceof Books)) { 
+        return false; 
+    } 
+      
+    // typecast o to Complex so that we can compare data members  
+    Books c = (Books) o; 
+      
+    // Compare the data members and return accordingly  
+    return c.getAuthor().equals(this.getAuthor())
+            && c.getIsbn()== this.getIsbn()
+            && c.getBookname().equals(this.getBookname());
+} 
+} 
+
+

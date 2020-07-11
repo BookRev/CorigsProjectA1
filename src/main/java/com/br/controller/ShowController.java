@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,38 +34,41 @@ UsersService UsersService;  // I change this without impl
 @Resource(name = "GetMessageService")
 GetMessageService getMessageService;
 private static final Logger log = LoggerFactory.getLogger(ShowController.class);
-public static boolean islogin = false;
-public static String nick = "";
 
-
+  
+ 
 @RequestMapping(value={"/add"},method = {RequestMethod.GET})
 public String add() {
 	UsersService.add(new Users());
 	return "redirect:/getMessage";
 }
-
+ 
 @RequestMapping("/home")
-public String homepage(ModelMap model) {
+public String homepage(ModelMap model,HttpServletRequest request,HttpSession session) {
 	String t1 = "";
-  if(!islogin) {
+  if(request.getSession().getAttribute("username")== null) {
 	t1 = "Please Login before used";
 	 model.put("mess",t1);
 	return "welcome";}
-  else
-	t1 = "Welcome, dear "+	nick;
+  else if (!(boolean)request.getSession().getAttribute("admin")) {
+	t1 = "Welcome, dear "+	request.getSession().getAttribute("username").toString();
   model.put("mess",t1);
-	return "welcomelogin";
-}
+	return "welcomelogin";}
+  else if((boolean)request.getSession().getAttribute("admin")) 
+	  t1 = "Welcome, admin "+	request.getSession().getAttribute("username").toString();
+	  model.put("mess",t1);
+		return "welcomeadmin";
+  }
+
 
 @RequestMapping("/logout")
-public String logout(ModelMap model) {
-	islogin = false;
-	nick = "";
-	LoginController.loginid = 0;
+public String logout(ModelMap model,HttpServletRequest request,HttpSession session) {
+	request.getSession().removeAttribute("userID");
+	request.getSession().removeAttribute("username");
 	return "redirect:/home";
 }
 
-@RequestMapping("/shows")
+@RequestMapping("/views")
 public @ResponseBody List<Show> shows(){
 	return UsersService.shows();
 }
@@ -74,6 +79,29 @@ public String getMessage(ModelMap model) {
 	return "index";
 }
 
+@GetMapping(path="/sup")
+public ModelAndView admlogin() {
+    return new ModelAndView("LoginAdmin", "loginadmin", new Users());
+}
+
+@RequestMapping(path="/sup",method=RequestMethod.POST)
+public String adminlogin(@Validated @ModelAttribute("loginadmin") Users users,
+        BindingResult result, ModelMap model,HttpServletRequest request,HttpSession session) {
+	model.put("type","Login");
+	String[] res = UsersService.verify(users,0);
+    if(res[0].equals("Not")) {
+    	model.put("errormess","This is not an admin account");
+    	return "fail";}
+    else if(res[0].equals("Fail")) {
+    	model.put("errormess","Incorrect password");
+	return "fail";}
+    else{
+    	request.getSession().setAttribute("username", users.getUsername());
+    	request.getSession().setAttribute("userID", res[1]);
+    	request.getSession().setAttribute("admin", true);
+    return "redirect:/home";}
+} 
+
 @GetMapping(path="/login")
 public ModelAndView showlogin() {
     return new ModelAndView("LoginName", "loginname", new Users());
@@ -81,7 +109,7 @@ public ModelAndView showlogin() {
 
 @RequestMapping(path="/login",method=RequestMethod.POST)
 public String login(@Validated @ModelAttribute("loginname") Users users,
-        BindingResult result, ModelMap model) {
+        BindingResult result, ModelMap model,HttpServletRequest request,HttpSession session) {
 	model.put("type","Login");
 	String[] res = UsersService.verify(users,1);
     if(res[0].equals("Not")) {
@@ -91,11 +119,11 @@ public String login(@Validated @ModelAttribute("loginname") Users users,
     	model.put("errormess","Incorrect password");
 	return "fail";}
     else{
-		islogin = true;
-		nick = res[0];
-		LoginController.loginid = Integer.parseInt(res[1]);
-	return "redirect:/home";}
-}
+    	request.getSession().setAttribute("username", users.getUsername());
+    	request.getSession().setAttribute("userID", res[1]);
+    	request.getSession().setAttribute("admin", false);
+    return "redirect:/home";}
+} 
 
 @GetMapping(path="/login2")
 public ModelAndView showlogin2() {
@@ -104,7 +132,7 @@ public ModelAndView showlogin2() {
 
 @RequestMapping(path="/login2",method=RequestMethod.POST)
 public String login2(@Validated @ModelAttribute("loginemail") Users users,
-        BindingResult result, ModelMap model) {
+        BindingResult result, ModelMap model,HttpServletRequest request,HttpSession session) {
 	model.put("type","Login");
 	String[] res = UsersService.verify(users,2);
     if(res[0].equals("Not")) {
@@ -114,9 +142,9 @@ public String login2(@Validated @ModelAttribute("loginemail") Users users,
     	model.put("errormess","Incorrect password");
 	return "fail";}
     else{
-		islogin = true;
-		nick = res[0];
-		LoginController.loginid = Integer.parseInt(res[1]);
+    	request.getSession().setAttribute("username", res[0]);
+    	request.getSession().setAttribute("userID", res[1]);
+    	request.getSession().setAttribute("admin", false);
 	return "redirect:/home";}
 }
 

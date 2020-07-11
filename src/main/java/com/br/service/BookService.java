@@ -12,4 +12,6 @@ import com.br.object.Users;
 public interface BookService {
 public Books getrev(Users user,Books books) throws MalformedURLException, ProtocolException, IOException;
 public ArrayList<Books> gethistory(Users user) throws MalformedURLException, ProtocolException, IOException;
+public void addfav(Users user, Books books);
+public ArrayList<Books> getfav(Users user) throws MalformedURLException, ProtocolException, IOException;
 }

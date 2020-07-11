@@ -1,5 +1,6 @@
 package com.br.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.br.dao.GetMessageDao;
 import com.br.dao.Show;
 import com.br.dao.UsersDao;
+import com.br.object.Operation;
 import com.br.object.Users;
 
 @Service("UsersService")
@@ -18,11 +20,19 @@ public class UsersServiceImpl implements UsersService{
 	private UsersDao UsersDao; 
 
 
-	public String add(Users user) {
+	public String add(Users user) { 
 		// TODO Auto-generated method stub
 		return UsersDao.add(user);
 	}
+	
+	public String addad(Users admin,Users user) { 
+		// TODO Auto-generated method stub
+		return UsersDao.addad(admin,user);
+	}
 
+	public void view(Users admin) {
+		UsersDao.view(admin);
+	}
 	public void changepw(String username, String pw) {
 		// TODO Auto-generated method stub
 		UsersDao.changepw(username, pw);
@@ -33,9 +43,9 @@ public class UsersServiceImpl implements UsersService{
 		UsersDao.changepw(id,pw);
 	}
 
-	public void delete(Users user) {
+	public String delete(Users admin,Users user) {
 		// TODO Auto-generated method stub
-		UsersDao.delete(user);
+		return UsersDao.deleteuser(admin,user);
 	}
 
 	public void delete(int id) {
@@ -61,10 +71,12 @@ public class UsersServiceImpl implements UsersService{
 	@Override
 	public String[] verify(Users user, int type) {
 		Users user2 = new Users();
-		if(type == 1)
+		if(type == 1) 
 		user2 = UsersDao.verify(user);
-		else 
+		else if(type == 2)
 		user2 = UsersDao.verifybyemail(user);
+		else if(type == 0)
+		user2 = UsersDao.adminverify(user);
 		if(user2.getId()==0)
 			return new String[]{"Not"};
 		else {
@@ -75,6 +87,18 @@ public class UsersServiceImpl implements UsersService{
 		}
 		// TODO Auto-generated method stub
 		
+	}
+
+	@Override
+	public ArrayList<Users> getuserinfo() {
+		// TODO Auto-generated method stub
+		return UsersDao.userinfo();
+	}
+
+	@Override
+	public ArrayList<Operation> getadmininfo() {
+		// TODO Auto-generated method stub
+		return UsersDao.userinfo2();
 	}
 
 }

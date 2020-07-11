@@ -15,19 +15,19 @@ import com.br.object.Users;
 
 @Repository("bookDao")
 public class BookdaoImpl implements Bookdao{
-	@Autowired
+	@Autowired 
 	JdbcTemplate jdbcTemplateObject;
-
+ 
 	@Override
 	public Books searchbyisbn(Users user,Books book) throws MalformedURLException, ProtocolException, IOException {
-		if(isBookExists(book)<1) {	
+		if(isBookExists(book)<1&&(book.getIsbn()+"").length()==13) {	
 		ArrayList<String> as = FindReview.FindReviews(book.getIsbn()+"");
 		if(as.contains("review")&&user.getId()>0) {
 			addnewbook(as,book.getIsbn(),isBookExists(book));
 			try {
 			    String presql = "SELECT COUNT(cover) from BOOK where isbn = ?";
 				int count = jdbcTemplateObject.queryForObject(presql, new Object[] { book.getIsbn()}, Integer.class);
-				String updatecover = "";
+				String updatecover = ""; 
 				if(count == 0) {
 					JavaGetRequest.findisbn(book);
 					updatecover = "UPDATE BOOK SET cover = ? WHere isbn = ?;";
@@ -42,7 +42,7 @@ public class BookdaoImpl implements Bookdao{
 			int i = 4;
 			ArrayList<String> revs = new ArrayList<String>();
 			ArrayList<Float> rats = new ArrayList<Float>();
-			String summary = "";
+			String summary = ""; 
 		try {
 			while(as.get(i).equals("review")) {
 				summary = as.get(i+1) + ":  \n" + as.get(i+2);
@@ -55,7 +55,12 @@ public class BookdaoImpl implements Bookdao{
 		}catch(Exception ee) {}
 		}else {
 			book.setIsbn(0);
-		return book;}}
+		return book;}} 
+		if((book.getIsbn()+"").length()!=13)
+         {
+	      book.setIsbn(0);
+	      return book;
+         }
 		try {
 		    String presql = "SELECT COUNT(cover) from BOOK where isbn = ?";
 			int count = jdbcTemplateObject.queryForObject(presql, new Object[] { book.getIsbn()}, Integer.class);
@@ -99,11 +104,29 @@ public class BookdaoImpl implements Bookdao{
 	}
 
 	@Override
-	public String[] getfavorite(Books book, Users user) {
-		// TODO Auto-generated method stub
-		//String sql = "SELECT isbn FROM favorite WHERE userID = ?";
-	//	return  jdbcTemplateObject.queryForObject(sql,new Object[] {user.getId()}, String[].class);
-	return null;
+	public ArrayList<Books> getfavorite(Users user) {
+		String sql = "SELECT title FROM SEARCHISTORY Natural Join BOOK WHERE userID = ? and favorite = true";
+		String sql2 = "SELECT author FROM SEARCHISTORY Natural Join BOOK WHERE userID = ? and favorite = true";
+		String sql3 = "SELECT cover FROM SEARCHISTORY Natural Join BOOK WHERE userID = ? and favorite = true";
+		String sql4 = "SELECT isbn FROM SEARCHISTORY Natural Join BOOK WHERE userID = ? and favorite = true";
+		ArrayList<Books> rest = new ArrayList<Books>();
+		List<String> tt = jdbcTemplateObject.queryForList(sql,new Object[] {user.getId()}, String.class);
+		List<String> at = jdbcTemplateObject.queryForList(sql2,new Object[] {user.getId()}, String.class);
+		List<String> ct = jdbcTemplateObject.queryForList(sql3,new Object[] {user.getId()}, String.class);
+		List<Long> it = jdbcTemplateObject.queryForList(sql4,new Object[] {user.getId()}, Long.class);
+		String[] titles = tt.toArray(new String[tt.size()]);
+		String[] authors = at.toArray(new String[at.size()]);
+		String[] covers = ct.toArray(new String[ct.size()]);
+		Long[] isbns = it.toArray(new Long[it.size()]);
+		for(int i=0;i<titles.length;i++) {
+			Books temp = new Books();
+			temp.setBookname(titles[i]);
+			temp.setAuthor(authors[i]);
+			temp.setBookpic(covers[i]);
+			temp.setIsbn(isbns[i]);
+			rest.add(temp);
+			} 
+		return rest;
 	}
 
 	@Override
@@ -128,7 +151,7 @@ public class BookdaoImpl implements Bookdao{
 			temp.setBookpic(covers[i]);
 			temp.setIsbn(isbns[i]);
 			rest.add(temp);
-			}
+			} 
 		return rest;
 	}
 
@@ -150,7 +173,7 @@ public class BookdaoImpl implements Bookdao{
 		count = jdbcTemplateObject.queryForObject(sql2, new Object[] { book.getIsbn()}, Integer.class);
 				String SQL = "INSERT IGNORE INTO SEARCHISTORY (userID,isbn,favorite) VALUES(?,?,?);";	
 		jdbcTemplateObject.update( SQL, new Object[]{user.getId(),book.getIsbn(),isfav} );	
-		return null;
+		return null; 
 	}
 
 	private int isBookExists(Books book) {
@@ -161,8 +184,9 @@ public class BookdaoImpl implements Bookdao{
 	        int result = 0;
 	         int count = jdbcTemplateObject.queryForObject(sql, new Object[] { isbn}, Integer.class);
 	         int count1 = jdbcTemplateObject.queryForObject(sql1, new Object[] { isbn}, Integer.class);
-	         int count2 = jdbcTemplateObject.queryForObject(sql2, new Object[] { isbn}, Integer.class);
-	     if (count >= 1) {
+              int count2 = jdbcTemplateObject.queryForObject(sql2, new Object[] { isbn}, Integer.class);
+	        // int count2 = 3;
+	         if (count >= 1) {
 	    	 if(count1 >=1) {
 	    		 if(count2 >=1)
 		           result = 1;
@@ -179,7 +203,7 @@ public class BookdaoImpl implements Bookdao{
 		// TODO Auto-generated method stub
 		String title = as.get(0);
 		String url = as.get(1);
-		Float rating = Float.parseFloat(as.get(2));
+		Float rating = Float.parseFloat(as.get(2)); 
 		String author = as.get(3);
 		String revtitle = "";
 		String body = "";
@@ -202,5 +226,11 @@ public class BookdaoImpl implements Bookdao{
 			i = i + 4;}
 		}catch(Exception ee) {}
 		
+	}
+
+	@Override
+	public void addfavorite(Users user,Books book) {
+		// TODO Auto-generated method stub
+		addhistory(user,book,true);
 	}
 }

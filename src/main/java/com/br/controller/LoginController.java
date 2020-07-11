@@ -4,8 +4,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,8 +25,8 @@ import com.br.service.UsersService;
 import com.br.object.Books;
 import com.br.object.Users;
 import com.br.service.BookService;
-
-@Controller
+ 
+@Controller 
 public class LoginController {
 	@Resource(name = "UsersService")
 	UsersService UsersService;  // I change this without impl
@@ -31,7 +34,6 @@ public class LoginController {
 	GetMessageService getMessageService;
 	@Resource(name = "BookService")
 	BookService BookService;
-	public static int loginid = 0;
 	
 	
 	@GetMapping(path="/search")
@@ -40,11 +42,12 @@ public class LoginController {
 	}
 
 	@RequestMapping(path="/search",method=RequestMethod.POST)
-	public String searching2(@Validated @ModelAttribute("search") Books book,Users user,
-	        BindingResult result, ModelMap model) throws MalformedURLException, ProtocolException, IOException {
-		if(!ShowController.islogin)
+	public String searching2(@Validated @ModelAttribute("search") Books book,
+			@Validated @ModelAttribute("back") Books book2,Users user,
+	        BindingResult result, ModelMap model,HttpServletRequest request,HttpSession session) throws MalformedURLException, ProtocolException, IOException {
+		if(request.getSession().getAttribute("username")== null)
 		   return "redirect:/home";
-		user.setId(loginid);
+		user.setId(Integer.parseInt(request.getSession().getAttribute("userID").toString()));
 		book = BookService.getrev(user, book);
 	    if(book.getIsbn()==0) {
 	    	model.put("type","Search");
@@ -62,26 +65,29 @@ public class LoginController {
 	//}
 
 	@RequestMapping(path="/history",method=RequestMethod.GET)
-	public String history2(Users user, ModelMap model) throws MalformedURLException, ProtocolException, IOException {
-		if(!ShowController.islogin)
+	public String history2(Users user, ModelMap model,HttpServletRequest request,HttpSession session) throws MalformedURLException, ProtocolException, IOException {
+		if(request.getSession().getAttribute("username")== null)
 		   return "redirect:/home";
-		user.setId(loginid);
+		user.setId(Integer.parseInt(request.getSession().getAttribute("userID").toString()));
 		ArrayList<Books> bs = BookService.gethistory(user);
 	    if(bs.get(0).getIsbn()==0) {
 	    	model.put("type","History");
 	    	model.put("errormess","No history yet");
 	    	return "fail";}
+	    Collections.reverse(bs);
 	    Books[] bs2 = bs.toArray(new Books[bs.size()]);
+	    model.put("title","History");
 	    model.put("myhistory", bs2);
 	    return "history2";
 	}
 	
 	@RequestMapping(path="/history1",method=RequestMethod.POST)
-	public String searchinghist(@Validated @ModelAttribute("choosen") Books book,Users user,
-	        BindingResult result, ModelMap model) throws MalformedURLException, ProtocolException, IOException {
-		if(!ShowController.islogin)
+	public String searchinghist(@Validated @ModelAttribute("choosen") Books book,
+			@Validated @ModelAttribute("back") Books book2,Users user,
+	        BindingResult result, ModelMap model,HttpServletRequest request,HttpSession session) throws MalformedURLException, ProtocolException, IOException {
+		if(request.getSession().getAttribute("username")== null)
 		   return "redirect:/home";
-		user.setId(loginid);
+		user.setId(Integer.parseInt(request.getSession().getAttribute("userID").toString()));
 		book = BookService.getrev(user, book);
 	    if(book.getIsbn()==0) {
 	    	model.put("type","Search");
@@ -94,10 +100,30 @@ public class LoginController {
 	}
 	
 	@RequestMapping("/favorite")
-	public String viewfavorite(ModelMap model) {
-		if(!ShowController.islogin)
+	public String viewfavorite(Users user, ModelMap model,HttpServletRequest request,HttpSession session) throws MalformedURLException, ProtocolException, IOException {
+		if(request.getSession().getAttribute("username")== null)
+			   return "redirect:/home";
+			user.setId(Integer.parseInt(request.getSession().getAttribute("userID").toString()));
+			ArrayList<Books> bs = BookService.getfav(user);
+		    if(bs.get(0).getIsbn()==0) {
+		    	model.put("type","History");
+		    	model.put("errormess","No favorite book yet");
+		    	return "fail";}
+		    Books[] bs2 = bs.toArray(new Books[bs.size()]);
+		    model.put("title","Favorite");
+		    model.put("myhistory", bs2);
+		    return "history2";
+	}
+	
+	
+	@RequestMapping("/newfavorite")
+	public String addfavorite(@Validated @ModelAttribute("back") Books book,BindingResult result,ModelMap model,HttpServletRequest request,HttpSession session) {
+		if(request.getSession().getAttribute("username")== null)
 			return "redirect:/home";
-		model.put("message","favorite part: building");
+		Users user = new Users();
+		user.setId(Integer.parseInt(request.getSession().getAttribute("userID").toString()));
+		BookService.addfav(user, book);
+		model.put("message","add favorite success");
 		return "index";
 	}
 	

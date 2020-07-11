@@ -17,12 +17,12 @@ public class FindReview {
 	    static String isbn1;
 	    
 	    public static ArrayList<String> FindReviews (String tmp) {
-	    	ArrayList<String> ret = new ArrayList<String>();
+	    	ArrayList<String> ret = new ArrayList<String>(); 
 	    	try{
 	    		int i = 0;
 	    		int bufferSize = 8 * 2048;
 	    		System.out.println("start");
-	    		String[] args1=new String[]{"python","findrev.py",tmp};
+	    		String[] args1=new String[]{"python3","findrev.py",tmp};
 	    		Process pr=Runtime.getRuntime().exec(args1);
 	    		  BufferedReader in = new BufferedReader(new InputStreamReader(pr.getInputStream(),"UTF8"),bufferSize);
 	    		   String line;
@@ -38,6 +38,10 @@ public class FindReview {
 	    			 System.out.println("end");
 	    			 } catch (Exception e) {
 	    			e.printStackTrace();}
+	    	if(ret.indexOf("review")==3)
+	    		ret.add(3, "");
+	    	else if(ret.size()<=3)
+	    		 ret.clear();
 	    	return ret;
 	    }
 	    

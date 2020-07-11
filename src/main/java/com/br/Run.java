@@ -1,3 +1,4 @@
+
 package com.br;
 
 import org.springframework.boot.SpringApplication;
@@ -10,7 +11,7 @@ public class Run{
 
 	public static void main(String[] args) {
 	 	SpringApplication.run(Run.class, args);
-	}
+	} 
 
 }	
 //#spring.datasource.schema=file:src/main/resources/schema.sql
