@@ -22,5 +22,6 @@ public interface UsersService {
     public List<Show> shows();
     public String[] verify(Users user,int type);
     public ArrayList<Users> getuserinfo();
+    public ArrayList<Users> getuserinfo(Users admin);
     public ArrayList<Operation> getadmininfo();
 }

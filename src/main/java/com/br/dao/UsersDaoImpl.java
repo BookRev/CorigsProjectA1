@@ -50,13 +50,14 @@ public class UsersDaoImpl implements UsersDao{
 			} 
 	} 
 	
-	public void view(Users admin) {
+	public ArrayList<Users> view(Users admin) {
 		Users user = new Users();
 		user.setEmail("");
 		user.setId(0);
 		user.setPassword("");
 		user.setUsername("");
 		addadminhistory(admin,user,"view");
+		return userinfo();
 	}
 
 	public void changepw(String username, String pw) {
@@ -226,6 +227,7 @@ public ArrayList<Users> userinfo() {
 	String sql2 = "SELECT username FROM USER ";
 	String sql3 = "SELECT userID FROM USER ";
 	String sql4 = "SELECT email FROM USER ";
+	String sql5 = "SELECT password FROM USER ";
 // TODO Auto-generated method stub
 //	String temp = jdbcTemplateObject.queryForObject(sql,new Object[] {user.getEmail()}, String.class);
 //	String temp2 = jdbcTemplateObject.queryForObject(sql2,new Object[] {user.getEmail()}, String.class);
@@ -235,12 +237,14 @@ public ArrayList<Users> userinfo() {
 	List<String> tb = jdbcTemplateObject.queryForList(sql2,String.class);
 	List<Integer> tc = jdbcTemplateObject.queryForList(sql3,Integer.class);
 	List<String> td = jdbcTemplateObject.queryForList(sql4,String.class);
+	List<String> te = jdbcTemplateObject.queryForList(sql5,String.class);
 	for(int i=0; i< ta.size();i++){
 	Users user2 = new Users();
 	user2.setPassword(ta.get(i));
 	user2.setId(tc.get(i));
 	user2.setUsername(tb.get(i));
 	user2.setEmail(td.get(i));
+	user2.setPassword(te.get(i));
 	ret.add(user2);
 	}
 	return ret;
@@ -248,10 +252,6 @@ public ArrayList<Users> userinfo() {
 
 @Override
 public String deleteuser(Users admin,Users user) {
-	if(!isUserExists(user))
-	{
-		return "Not";
-	}
 	String SQL0 = "DELETE FROM USER where userID = ?";	
 	jdbcTemplateObject.update( SQL0, new Object[]{user.getId()} );	
 	addadminhistory(admin,user,"delete");
@@ -262,15 +262,15 @@ public String deleteuser(Users admin,Users user) {
 private void addadminhistory(Users admin, Users user,String type) {
 	String sql0 = "insert into ADMINHISTORY(adminID,ID,username,email,type) VALUES(?,?,?,?,?)";
 			jdbcTemplateObject.update(sql0, new Object[]{admin.getId(),user.getId(),user.getUsername(),user.getEmail(),type} );	
-}
+} 
 
 @Override
 public ArrayList<Operation> userinfo2() {
-	String sql0 = "Select adminID from ADMINHISTORY";
-	String sql1 = "Select adminname from ADMINHISTORY Natural Join ADMIN";
-	String sql2 = "Select ID from ADMINHISTORY";
-	String sql3 = "Select username from ADMINHISTORY";
-	String sql4 = "Select type from ADMINHISTORY";
+	String sql0 = "Select adminID from ADMINHISTORY order by operationid";
+	String sql1 = "Select adminname from ADMINHISTORY Natural Join ADMIN order by operationid";
+	String sql2 = "Select ID from ADMINHISTORY order by operationid";
+	String sql3 = "Select username from ADMINHISTORY order by operationid";
+	String sql4 = "Select type from ADMINHISTORY order by operationid";
 	ArrayList<Operation> ret = new ArrayList<Operation>();
 	List<Integer> aid = jdbcTemplateObject.queryForList(sql0,Integer.class);
 	List<String> an = jdbcTemplateObject.queryForList(sql1,String.class);

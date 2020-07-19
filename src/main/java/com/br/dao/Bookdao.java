@@ -17,4 +17,6 @@ Books searchbyisbn2(Users user,Books book) throws MalformedURLException, Protoco
 String[] addhistory(Users user, Books book, boolean isfav);
 public void addnewbook(ArrayList<String> as,Long isbn,int isexist);
 public void addfavorite(Users user,Books book);
+public ArrayList<Books> searchbyname(String title, int page);
+public void deletebook(Users user,Books book);
 }

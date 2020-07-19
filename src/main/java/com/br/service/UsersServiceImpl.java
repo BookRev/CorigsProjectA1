@@ -94,6 +94,12 @@ public class UsersServiceImpl implements UsersService{
 		// TODO Auto-generated method stub
 		return UsersDao.userinfo();
 	}
+	
+	@Override
+	public ArrayList<Users> getuserinfo(Users admin) {
+		// TODO Auto-generated method stub
+		return UsersDao.view(admin);
+	}
 
 	@Override
 	public ArrayList<Operation> getadmininfo() {

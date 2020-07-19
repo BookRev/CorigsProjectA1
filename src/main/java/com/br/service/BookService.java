@@ -14,4 +14,6 @@ public Books getrev(Users user,Books books) throws MalformedURLException, Protoc
 public ArrayList<Books> gethistory(Users user) throws MalformedURLException, ProtocolException, IOException;
 public void addfav(Users user, Books books);
 public ArrayList<Books> getfav(Users user) throws MalformedURLException, ProtocolException, IOException;
+public ArrayList<Books> searchbyname(String title, int page);
+public void deletebook(Users user,Books book);
 }

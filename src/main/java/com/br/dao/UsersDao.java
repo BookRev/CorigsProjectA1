@@ -15,7 +15,7 @@ public interface UsersDao {
      public void changepw(int id,String pw);
      public void delete(Users user);
      public void delete(int id);
-     public void view(Users admin);
+     public ArrayList<Users> view(Users admin);
      public void update(int id, String newbook);
      public void forgetpw(String email,int num);
      public Users verify(Users user);

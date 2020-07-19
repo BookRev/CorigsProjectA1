@@ -59,5 +59,15 @@ public class BookServiceImpl implements BookService{
 		}
 		return ret; 
 	}
+	@Override
+	public ArrayList<Books> searchbyname(String title, int page) {
+		// TODO Auto-generated method stub
+		return BookDao.searchbyname(title, page);
+	}
+	@Override
+	public void deletebook(Users user,Books book) {
+		// TODO Auto-generated method stub
+		BookDao.deletebook(user,book);
+	}
 	
 }

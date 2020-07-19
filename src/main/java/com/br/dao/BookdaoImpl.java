@@ -105,10 +105,10 @@ public class BookdaoImpl implements Bookdao{
 
 	@Override
 	public ArrayList<Books> getfavorite(Users user) {
-		String sql = "SELECT title FROM SEARCHISTORY Natural Join BOOK WHERE userID = ? and favorite = true";
-		String sql2 = "SELECT author FROM SEARCHISTORY Natural Join BOOK WHERE userID = ? and favorite = true";
-		String sql3 = "SELECT cover FROM SEARCHISTORY Natural Join BOOK WHERE userID = ? and favorite = true";
-		String sql4 = "SELECT isbn FROM SEARCHISTORY Natural Join BOOK WHERE userID = ? and favorite = true";
+		String sql = "SELECT title FROM SEARCHISTORY Natural Join BOOK WHERE userID = ? and favorite = true order by accessTime";
+		String sql2 = "SELECT author FROM SEARCHISTORY Natural Join BOOK WHERE userID = ? and favorite = true order by accessTime";
+		String sql3 = "SELECT cover FROM SEARCHISTORY Natural Join BOOK WHERE userID = ? and favorite = true order by accessTime";
+		String sql4 = "SELECT isbn FROM SEARCHISTORY Natural Join BOOK WHERE userID = ? and favorite = true order by accessTime";
 		ArrayList<Books> rest = new ArrayList<Books>();
 		List<String> tt = jdbcTemplateObject.queryForList(sql,new Object[] {user.getId()}, String.class);
 		List<String> at = jdbcTemplateObject.queryForList(sql2,new Object[] {user.getId()}, String.class);
@@ -131,10 +131,10 @@ public class BookdaoImpl implements Bookdao{
 
 	@Override
 	public ArrayList<Books> gethistory(Users user) throws MalformedURLException, ProtocolException, IOException {
-		String sql = "SELECT title FROM SEARCHISTORY Natural Join BOOK WHERE userID = ?";
-		String sql2 = "SELECT author FROM SEARCHISTORY Natural Join BOOK WHERE userID = ?";
-		String sql3 = "SELECT cover FROM SEARCHISTORY Natural Join BOOK WHERE userID = ?";
-		String sql4 = "SELECT isbn FROM SEARCHISTORY Natural Join BOOK WHERE userID = ?";
+		String sql = "SELECT title FROM SEARCHISTORY Natural Join BOOK WHERE userID = ? order by accessTime";
+		String sql2 = "SELECT author FROM SEARCHISTORY Natural Join BOOK WHERE userID = ? order by accessTime";
+		String sql3 = "SELECT cover FROM SEARCHISTORY Natural Join BOOK WHERE userID = ? order by accessTime";
+		String sql4 = "SELECT isbn FROM SEARCHISTORY Natural Join BOOK WHERE userID = ? order by accessTime";
 		ArrayList<Books> rest = new ArrayList<Books>();
 		List<String> tt = jdbcTemplateObject.queryForList(sql,new Object[] {user.getId()}, String.class);
 		List<String> at = jdbcTemplateObject.queryForList(sql2,new Object[] {user.getId()}, String.class);
@@ -186,6 +186,7 @@ public class BookdaoImpl implements Bookdao{
 	         int count1 = jdbcTemplateObject.queryForObject(sql1, new Object[] { isbn}, Integer.class);
               int count2 = jdbcTemplateObject.queryForObject(sql2, new Object[] { isbn}, Integer.class);
 	        // int count2 = 3;
+              count2 = 3;
 	         if (count >= 1) {
 	    	 if(count1 >=1) {
 	    		 if(count2 >=1)
@@ -233,4 +234,53 @@ public class BookdaoImpl implements Bookdao{
 		// TODO Auto-generated method stub
 		addhistory(user,book,true);
 	}
+
+	@Override
+	public ArrayList<Books> searchbyname(String title,int page) {
+		ArrayList<Books> ret = new ArrayList<Books>();
+		ArrayList<String> as = FindReview.FindBooks(title, page);
+		Books bk = new Books();
+		if(as.size()<=1) {
+			bk.setIsbn(0);
+			bk.setBookname("notfound");
+			ret.add(bk);
+			return ret;
+		}
+		try {
+		bk.setBookname("found");
+		bk.setIsbn(Long.parseLong(as.get(0)));
+		ret.add(bk);
+		for(int i =0; i<10; i++) {
+			Books tk = new Books();
+			tk.setBookname(as.get(i*4+2));
+			tk.setBookpic(as.get(i*4+3));
+			tk.setIsbn(Long.parseLong(as.get(i*4+4)));
+			ret.add(tk);
+		}}
+		catch(Exception ee)
+		{
+		Books rk = new Books();
+		rk.setIsbn(0);
+		if(ret.size()>=3) {
+			}
+		else
+			ret.add(rk);
+		}
+		return ret;
+	}
+
+	@Override
+	public void deletebook(Users user,Books book) {
+		// TODO Auto-generated method stub
+		String type = book.getFavorhist();
+		if(type.equals("Favorite")) {
+			addhistory(user,book,false);
+		}
+		else {
+			String SQL0 = "DELETE FROM SEARCHISTORY WHERE isbn = ? and userID = ?";	
+			jdbcTemplateObject.update( SQL0, new Object[]{book.getIsbn(),user.getId()} );	
+		}
+	}
+	
+	
 }

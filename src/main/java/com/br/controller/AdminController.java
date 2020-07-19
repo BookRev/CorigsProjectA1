@@ -4,9 +4,11 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -49,6 +51,7 @@ public class AdminController {
 		ArrayList<Users> us = UsersService.getuserinfo();
 		Users[] us2 = us.toArray(new Users[us.size()]);
 		model.put("userinfo", us2);
+		model.put("canalert", false);
 	    return "showuser";
 	}
 
@@ -66,9 +69,10 @@ public class AdminController {
 		Users admin = new Users();
 		admin.setId(Integer.parseInt(request.getSession().getAttribute("userID").toString()));
 		String delres = UsersService.delete(admin,user);
-		model.put("message","delete success");
-		return "index";
-		//return "redirect";
+		//model.put("message","delete success");
+		//return "index";
+		model.put("canalert", true);
+		return "redirect:/del";
 	}
 	
 	@GetMapping(path="/addadmin")
@@ -98,7 +102,7 @@ public class AdminController {
 			s1 += "*";
 		model.put("password",s1);
 		if(res.equals("finish"))
-		return "regsucc";
+		return "regsucc2";
 		else if(res.equals("cusername")) {
 			model.put("type","Register");
 			model.put("errormess","Adminname in used, please use another admin name");
@@ -110,11 +114,22 @@ public class AdminController {
 	}
 	
 	@RequestMapping("/shows")
-	public @ResponseBody List<Show> shows(HttpServletRequest request,HttpSession session){
+	public String shows(ModelMap model,HttpServletRequest request,HttpSession session){
+		if(request.getSession().getAttribute("username")== null)
+			   return "redirect:/home";
+			else if(!(boolean)request.getSession().getAttribute("admin"))
+			{
+				model.put("type","Admin");
+		    	model.put("errormess","Please login as an admin and access");
+		    	return "fail";
+			}
 		Users admin = new Users();
 		admin.setId(Integer.parseInt(request.getSession().getAttribute("userID").toString()));
-		UsersService.view(admin);
-		return UsersService.shows();
+		ArrayList<Users> us = UsersService.getuserinfo(admin);
+		Users[] us2 = us.toArray(new Users[us.size()]);
+		model.put("userinfo", us2);
+		model.put("canalert", false);
+	    return "showuserdetail";
 	}
 
 	@GetMapping(path="/adminhistory")
@@ -128,8 +143,12 @@ public class AdminController {
 		    	return "fail";
 			}
 		ArrayList<Operation> us = UsersService.getadmininfo();
-		Operation[] us2 = us.toArray(new Operation[us.size()]);
+		Collections.reverse(us);
+		Operation[] us2 = new Operation[us.size()];
+		us2 = us.toArray(us2);
+		Operation lasto = us2[0];
 		model.put("admininfo", us2);
+		model.put("lastop", lasto);
 	    return "showop";
 	}
 	

@@ -1,13 +1,17 @@
 package com.br.object;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class Books { 
 private long isbn;
+private String sisbn;
 private String bookpic;
 private String bookname;
 private Float rate[];   //rate on different platforms                          
@@ -23,6 +27,11 @@ private String[] link;
 private String[] webname;
 private String[] reviews;
 private Float[] rateofreviews;
+private File barcode;
+private MultipartFile barpic;
+private boolean delfav;
+private String favorhist;
+
 
 
 @Id											
@@ -32,10 +41,17 @@ public long getIsbn() {
 }
 public void setIsbn(long isbn) {
 	this.isbn = isbn;
+	}
+
+public String getSisbn() {
+	return sisbn;
 }
-public void setIsbn(String isbn) {
-	this.isbn = Long.parseLong(isbn.replaceAll("[^0-9]", ""));
+
+public void setSisbn(String sisbn) {
+	this.sisbn = sisbn;
+			//Long.parseLong(isbn.replaceAll("[^0-9]", ""));
 }
+
 
 public String getBookpic() {
 	return bookpic;
@@ -124,6 +140,34 @@ public Float[] getRateofReviews() {
 }
 public void setRateofReviews(Float[]  rateofreviews) {
 	this.rateofreviews = rateofreviews; 
+}
+public File getBarcode() {
+	return barcode;
+}
+public void setBarcode(File barcode) {
+	this.barcode = barcode;
+}
+
+public MultipartFile getBarpic() {
+	return barpic;
+}
+public void setBarpic(MultipartFile barpic) throws IllegalStateException, IOException {
+	this.barpic = barpic;
+}
+
+public boolean getDelfav() {
+	return delfav;
+}
+public void setDelfav(boolean delfav) {
+	this.delfav = delfav;
+}
+
+public String getFavorhist() {
+	return favorhist;
+}
+
+public void setFavorhist(String favorhist) {
+	this.favorhist = favorhist;
 }
 
 public boolean equals(Object o) { 

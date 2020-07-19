@@ -160,6 +160,10 @@ public String regusers(@Validated @ModelAttribute("users") Users users,
 	model.put("username",users.getUsername());
 	model.put("email",users.getEmail());
 	int pwl = users.getPassword().length();
+	if(users.getUsername().isEmpty()){
+		model.put("type","Register");
+		model.put("errormess","Please Type in an username");
+		return "fail";}
 	String s1 = "";
 	for(int i=0;i<pwl;i++)
 		s1 += "*";
