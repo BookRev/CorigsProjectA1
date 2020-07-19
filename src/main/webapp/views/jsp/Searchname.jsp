@@ -38,15 +38,15 @@
 </script> 
 <script>
     function pageRedirect3() {
-      window.location.href = "/search3";
+      window.location.href = "/search";
     }      
 </script> 
 <form:form method="POST"
-           action="/search" modelAttribute="search">
+           action="/search3" modelAttribute="title">
     <table width="259">
         <tr>
-            <td width="66"><form:label path="sisbn">Isbn</form:label></td>
-            <td width="164"><form:input path="sisbn"/></td>
+            <td width="66"><form:label path="bookname">Title</form:label></td>
+            <td width="164"><form:input path="bookname"/></td>
         </tr>           
     </table>
     <p>&nbsp;</p>
@@ -54,11 +54,11 @@
         <tr>
             <td><input type="button" name="Submit2" onClick="pageRedirect2()" value="I want to upload a picture instead">
         </tr>
-         <tr>
-            <td><input type="button" name="Submit3" onClick="pageRedirect3()" value="I want to search the title">
+        <tr>
+            <td><input type="button" name="Submit3" onClick="pageRedirect3()" value="I want to type isbn instead">
         </tr>
         <tr>
-            <td><input type="submit" value="Search this isbn!"/></td>
+            <td><input type="submit" value="Search this name!"/></td>
         </tr>
     </table>
 </form:form>

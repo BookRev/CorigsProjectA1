@@ -36,10 +36,11 @@
 			<div class="navbar-header"> <a class="navbar-brand" href="/sup">Admin Login</a>		      </div>
 			<div id="navbar" class="collapse navbar-collapse">
 				<ul class="nav navbar-nav">
-				    <li class="active"><a href="/home">Home</a></li>
-					<li class="active"><a href="/login">Username Login</a></li>
-					<li class="active"><a href="/login2">Email Login</a></li>
-					<li><a href="/reg">Register</a></li>
+				   <li class="active"><a href="/home">Home</a></li>
+					<li class="active"><a href="/del">Delete Users</a></li>
+					<li class="active"><a href="/shows">View Users</a></li>
+					<li class="active"><a href="/adminhistory">View History</a></li>
+					<li class="active"><a href="/addadmin">Add Admin</a></li>
 				</ul>
 			</div>
 		</div>

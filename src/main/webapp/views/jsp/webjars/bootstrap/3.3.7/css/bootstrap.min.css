@@ -1,0 +1,7 @@
+@charset "utf-8";
+.navbar-header {
+	font-size: 12px;
+}
+.navbar.navbar-inverse {
+	font-size: 14px;
+}

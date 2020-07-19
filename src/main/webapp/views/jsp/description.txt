@@ -1,0 +1,41 @@
+Register:
+  Register: page to register
+  Regsucc: page after register success
+  Addadmin: page to register for admin
+
+Login:
+  LoginName: page to login by name
+  LoginEmail: page to login by email
+  LoginAdmin: page for Admin to login 
+
+Home:
+  welcome: basic home page, before login
+  welcomelogin: home page after login
+  welcomeadmin: home page after admin login
+
+Fail:
+   fail: all the failure message is shown on this page
+
+Users Part:
+History&Favorite:
+    history2: show history & favorite
+
+Searching a book:
+    Search: search a book by isbn
+    Searchname: search a book by name
+       Searchresult: after search a book name, show all possible books with this key word
+    uploadsearch: upload a pictrue of barcode
+    uploadsearch2: show the isbn found by this barcode, if zxing can find it
+    review: page to show the reviews
+
+Admin Part:
+Admin register:
+     regsucc2: page after admin register success
+
+View Admin opeartion history:
+      showop:show history of delete user/view full user information/ add another admin account
+
+Delete user:
+     showuser: show all users account, and allow admin to choose one to delete
+     showuserdetail: show all users account with their password
+

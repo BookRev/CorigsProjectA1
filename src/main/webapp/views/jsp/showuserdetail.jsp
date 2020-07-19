@@ -13,6 +13,12 @@
 .messagee h5 {
 	font-size: 24px;
 }
+.messagee {
+	font-size: 16px;
+}
+.messagee h4 {
+	font-size: 36px;
+}
 </style>
 	
 	<link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
@@ -31,6 +37,11 @@ if(!"${canalert}"){
 }
 else{
 alert("Delete success");}
+} 
+</script> 
+<script type="text/javascript">
+function alertName2(){
+alert("You enter user detail page, which will be recorded in admin history");
 } 
 </script> 
 	<nav class="navbar navbar-inverse">
@@ -65,8 +76,9 @@ action="/del" modelAttribute="choosen" commandnName="myhistory">
     <h2>users: ${user.getId()}</h2>
     <h3>username: ${user.getUsername()}</h3>
     <h4>email: ${user.getEmail()}</h4>
+    <h5>password: ${user.getPassword()}</h5>
     </div>
-    <BUTTON type="submit" onclick="alertName()" >Delete this</button>
+    <BUTTON type="submit" onClick="alertName()" >Delete this</button>
     
           </td>
         </tr>    
@@ -74,7 +86,11 @@ action="/del" modelAttribute="choosen" commandnName="myhistory">
  </form:form>
        
     </c:forEach>
-   
+<script type="text/javascript">
+window.onload = function() {
+	alert("You enter user detail page, which will be recorded in admin history");
+}
+</script> 
 
 </body>
 </html>

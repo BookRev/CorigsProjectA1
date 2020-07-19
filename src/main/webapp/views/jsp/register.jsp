@@ -33,6 +33,39 @@
 			</div>
 		</div>
 	</nav>
+	<script> 
+	window.onsubmit = function()
+	{
+	    var username = document.getElementById("username").value;
+	    var email = document.getElementById("email").value;
+	    var password = document.getElementById("password").value;
+
+	    if(username == "") 
+	    {
+	        alert("Please provide an username");
+	        return false;
+	    }
+	    if(email=="")
+	    {
+	        alert("Please provide an email");
+	        return false;
+	    }
+	    if(password=="")
+	    {
+	        alert("Please provide a password");
+	        return false;
+	    }
+	    else
+	    {
+	        //document.forms["report"].submit();
+	        document.form["users"].method = "POST";
+	        document.form["users"].action = "/reg";
+	        //document.location = "reportbeanservlet";
+	        return true;
+	    }
+	}
+	</script> 
+
 <h3>register information</h3>
 <form:form method="POST"
            action="/reg" modelAttribute="users">

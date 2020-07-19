@@ -51,7 +51,6 @@ action="/history1" modelAttribute="choosen" commandnName="myhistory">
   <td width="789">
   <input type="image"  src="${hist.getBookpic()}" height  = "200"  >
     <input type = "hidden" name="isbn" value="${hist.getIsbn()}">
-    
     <input type = "hidden" name="myhistory" value="${hist.getBookname()}">
     <INPUT type = "hidden" NAME="author" VALUE="${hist.getAuthor()}">
     <div class="messagee">
@@ -65,9 +64,20 @@ action="/history1" modelAttribute="choosen" commandnName="myhistory">
         </tr>    
            </table>            
  </form:form>
-       
+     <form:form name="History" method="POST" 
+action="/delbook" modelAttribute="delbook" commandnName="myhistory">  
+      <input type = "hidden" name="isbn" value="${hist.getIsbn()}">
+    <input type = "hidden" name="myhistory" value="${hist.getBookname()}">
+    <INPUT type = "hidden" NAME="author" VALUE="${hist.getAuthor()}">
+    <INPUT type = "hidden" NAME="favorhist" VALUE="${title}">
+<BUTTON type="submit" onClick="alertName()">Delete this</button>
+</form:form>   
     </c:forEach>
    
+ <script> 
+   function alertName(){
+alert("Delete success");}
+</script> 
 
 </body>
 </html>

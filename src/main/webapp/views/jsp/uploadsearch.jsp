@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="com.br.dao.Barcode"%>
 <html>
 <head>
 <!-- Access the bootstrap Css like this,
@@ -30,37 +31,23 @@
 			</div>
 		</div>
 	</nav>
-<h3>search</h3>
+<h3>Upload a barcode file (this will need much more time)</h3>
 <script>
-    function pageRedirect2() {
-      window.location.href = "/search2";
+    function pageRedirect() {
+      window.location.href = "/search";
     }      
 </script> 
 <script>
-    function pageRedirect3() {
+    function pageRedirect2() {
       window.location.href = "/search3";
     }      
 </script> 
-<form:form method="POST"
-           action="/search" modelAttribute="search">
-    <table width="259">
-        <tr>
-            <td width="66"><form:label path="sisbn">Isbn</form:label></td>
-            <td width="164"><form:input path="sisbn"/></td>
-        </tr>           
-    </table>
-    <p>&nbsp;</p>
-    <table width="240">
-        <tr>
-            <td><input type="button" name="Submit2" onClick="pageRedirect2()" value="I want to upload a picture instead">
-        </tr>
-         <tr>
-            <td><input type="button" name="Submit3" onClick="pageRedirect3()" value="I want to search the title">
-        </tr>
-        <tr>
-            <td><input type="submit" value="Search this isbn!"/></td>
-        </tr>
-    </table>
+<form:form method="post" action="/search2" modelAttribute="search" enctype="multipart/form-data">
+    <form:input type="file" name="uploadFile" value="upload a file" path="barpic"/>
+    <br/><br/>
+    <input type="button" name="Submit2" onclick="pageRedirect()" value="I want to type the isbn">
+    <input type="button" name="Submit3" onclick="pageRedirect2()" value="I want to type the title">
+    <input type="submit" value="upload"/>
 </form:form>
 </body>
 </html>

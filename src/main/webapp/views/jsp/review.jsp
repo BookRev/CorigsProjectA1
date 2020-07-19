@@ -22,6 +22,9 @@
 .h7 {
 	font-family: Georgia, "Times New Roman", Times, serif;
 }
+.messagee h6 {
+	font-size: 24px;
+}
 </style>
 <!-- Access the bootstrap Css like this,
 		Spring boot will handle the resource mapping automcatically -->
@@ -61,6 +64,7 @@
     <h2>${res.getBookname()}</h2>
     <h3>${res.getAuthor()}</h3>
     <h5>ISBN-13: ${res.getIsbn()}</h5>
+    <h6>Overall rate: ${res.getRate()[0]}</h6>
     </div>
          </td>
         </tr>    
@@ -75,16 +79,25 @@
   </h7>
 
 </c:forEach>
-
+<script>
+    function pageRedirect3() {
+      window.open("${res.getLink()[0]}");
+    }      
+</script> 
 <form:form method="POST"
            action="/newfavorite" modelAttribute="back">
-<input type="button" name="Submit1" onclick="javascript:history.go(-3);" value="Back">
+<input type="button" name="Submit1" onClick="javascript:history.go(-3);" value="Back">
 <%-- input type="button" name="Submit2" onclick="openWindowWithPost('/newfavorite','','isbn','${res.getIsbn()}')"
 value="Mark as favorite and Back"/--%>
 <form:input type = "hidden" path="isbn" value = "${res.getIsbn()}"/>
-<input type="submit" value="Mark as favorite and Back"/>
+<input type="submit" onClick="alertName()" value="Mark as favorite and Back" />
+<input type="button" name="Submit2" onClick="pageRedirect3()" value="Go to Amazon Page">
 </form:form>
 
+<script type="text/javascript">
+function alertName(){
+alert("Add favorite success");}
+</script> 
 <script type="text/javascript">
 setTimeout('reload()', 5000);  
 window.onload = function() {

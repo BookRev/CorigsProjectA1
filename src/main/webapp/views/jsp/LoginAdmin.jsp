@@ -33,6 +33,33 @@
 			</div>
 		</div>
 	</nav>
+	
+	<script> 
+	window.onsubmit = function()
+	{
+	    var username = document.getElementById("username").value;
+	    var password = document.getElementById("password").value;
+
+	    if(username == "") 
+	    {
+	        alert("Please provide your admin username");
+	        return false;
+	    }
+	    if(password=="")
+	    {
+	        alert("Please provide your admin password");
+	        return false;
+	    }
+	    else
+	    {
+	        //document.forms["report"].submit();
+	        document.form["loginadmin"].method = "POST";
+	        document.form["loginadmin"].action = "/sup";
+	        //document.location = "reportbeanservlet";
+	        return true;
+	    }
+	}
+	</script> 
 <h3>Admin login</h3>
 <form:form method="POST"
            action="/sup" modelAttribute="loginadmin">
