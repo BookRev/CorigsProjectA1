@@ -76,6 +76,12 @@ public void testhistory_emptyhistory() throws Exception {
 } 
 
 @Test  
+public void testhistory_notlogin() throws Exception {  
+	mockMvc.perform(get("/history"))
+			.andExpect(redirectedUrl("/home"));
+} 
+
+@Test  
 public void testfavorite_emptyfavorite() throws Exception {  
 	HashMap<String, Object> sessionattr = new HashMap<String, Object>();
 	sessionattr.put("username", "emptyuser");
@@ -85,6 +91,28 @@ public void testfavorite_emptyfavorite() throws Exception {
 			.andExpect(status().isOk());
 } 
 
+@Test  
+public void testfavorite_notlogin() throws Exception {  
+	mockMvc.perform(post("/favorite"))
+			.andExpect(redirectedUrl("/home"));
+} 
+
+@Test  
+public void testdel_notlogin() throws Exception {  
+	mockMvc.perform(get("/del"))
+			.andExpect(redirectedUrl("/home"));
+} 
+
+@Test  
+public void testdel_notadmin() throws Exception {  
+	HashMap<String, Object> sessionattr = new HashMap<String, Object>();
+	sessionattr.put("username", "junit");
+	sessionattr.put("userID", 13);
+	sessionattr.put("admin", false);
+	mockMvc.perform(get("/del").sessionAttrs(sessionattr))
+			.andExpect(model().attribute("errormess","Please login as an admin and access"))
+			.andExpect(status().isOk());
+} 
 
 @Test  
 public void testfavorite_newfavorite() throws Exception {  
@@ -173,7 +201,7 @@ public void testsearchbyisbn_invalidisbn13() throws Exception {
 	book.setAuthor("Thanhha Lai");
 	request.getSession().setAttribute("username", "junit");
 	request.getSession().setAttribute("userID", 13);
-	mockMvc.perform(post("/search").param("sisbn", "97800619783").sessionAttrs(sessionattr))
+	mockMvc.perform(post("/search").param("sisbn", "9780439062273").sessionAttrs(sessionattr))
 			.andExpect(model().attribute("errormess","No result is found by this isbn"))
 			.andExpect(status().isOk());
 } 
@@ -208,6 +236,12 @@ public void testsearchbyisbn_emptyisbn() throws Exception {
 	mockMvc.perform(post("/search").param("sisbn", "").sessionAttrs(sessionattr))
 			.andExpect(model().attribute("errormess","Did you type an invalid isbn?"))
 			.andExpect(status().isOk());
+} 
+
+@Test  
+public void testsearchbyname_notlogin() throws Exception {  
+	mockMvc.perform(post("/search3"))
+	.andExpect(redirectedUrl("/home"));
 } 
 
 @Test  
@@ -307,9 +341,8 @@ public void testsearchbyname_jumpexception() throws Exception {
 	sessionattr.put("userID", 13);
 	request.getSession().setAttribute("username", "junit");
 	request.getSession().setAttribute("userID", 13);
-	mockMvc.perform(post("/search4").param("title", "Harry Potter").param("total", "100").param("spageno", "30").param("type", "jump").sessionAttrs(sessionattr))
-			.andExpect(model().attribute("page",30))
-			.andExpect(model().attribute("searchtitle","Harry Potter"))
+	mockMvc.perform(post("/search4").param("title", "Harry Potter").param("total", "100").param("spageno", "invalidnumber").param("type", "jump").sessionAttrs(sessionattr))
+			.andExpect(model().attribute("errormess","Did you type an invalid page number?"))
 			.andExpect(status().isOk());
 }
 
