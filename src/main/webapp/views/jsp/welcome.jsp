@@ -14,7 +14,7 @@
 	 -->
 	<c:url value="/css/main.css" var="jstlCss" />
 	<link href="${jstlCss}" rel="stylesheet" />
-	body {background-color: red;}
+	body {background-color: #FF9966;}
 </head>
 <body>
 	
