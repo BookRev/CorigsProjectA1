@@ -14,9 +14,9 @@
 	 -->
 	<c:url value="/css/main.css" var="jstlCss" />
 	<link href="${jstlCss}" rel="stylesheet" />
-	body {background-color: #FF9966;}
+	
 </head>
-<body>
+<body style="backround-color:#FF9966;">
 	
 	<nav class="navbar navbar-inverse">
 		    <div class="container">
