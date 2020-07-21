@@ -17,7 +17,6 @@
 
 </head>
 <body>
-	background-color: red;
 	
 	<nav class="navbar navbar-inverse">
 		    <div class="container">
