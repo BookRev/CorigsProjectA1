@@ -2,28 +2,27 @@
 # team Corigs
 # members
 
-Tran Phan
+Tran Phan: 
 Work on user/sys requirements. check and revise all the diagrams/models based on the requirements
 
 
-Ryan Salter
+Ryan Salter: 
 Measures and Patterns of the Whole system:Check and revise database diagrams and help with testing. 
  
-Yuhan Yang
-Planning and scheduling
-Write the final (A6) report
+Yuhan Yang: 
+Planning and scheduling, 
+Write the final (A6) report, 
 Coding the project & white box testing
 
-Parth Patel
+Parth Patel: 
 Black-box testing part
 Design user’s guide
 
-Jocelyn Reynolds
+Jocelyn Reynolds: 
 Design presentation slide
 Revise the reports and assist other team members with diagrams
 
-
-Angel Walker
+Angel Walker: 
 Check the format of the final report. 
 Editing presentation video
 Discuss about self reflection. 
